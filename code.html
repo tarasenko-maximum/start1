@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BookStart — Краудфандинг для авторов</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,wght@0,400;0,600;0,700;1,400&amp;family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#2f3130",
+                        "inverse-primary": "#bfc7d1",
+                        "secondary-fixed-dim": "#b8c8db",
+                        "surface": "#f9f9f7",
+                        "on-primary-container": "#7c858e",
+                        "background": "#f9f9f7",
+                        "tertiary-fixed-dim": "#c7c7c0",
+                        "surface-container-highest": "#e2e3e1",
+                        "on-surface-variant": "#44474b",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#404850",
+                        "on-error-container": "#93000a",
+                        "primary": "#000000",
+                        "outline-variant": "#c4c6cb",
+                        "on-primary": "#ffffff",
+                        "secondary": "#506070",
+                        "on-primary-fixed": "#141c23",
+                        "on-background": "#1a1c1b",
+                        "secondary-fixed": "#d3e4f8",
+                        "secondary-container": "#d3e4f8",
+                        "inverse-on-surface": "#f1f1ef",
+                        "primary-fixed-dim": "#bfc7d1",
+                        "primary-fixed": "#dbe3ed",
+                        "surface-container-high": "#e8e8e6",
+                        "surface-container": "#eeeeec",
+                        "on-tertiary-fixed-variant": "#464742",
+                        "on-tertiary-fixed": "#1a1c18",
+                        "tertiary-container": "#1a1c18",
+                        "surface-container-low": "#f4f4f2",
+                        "error": "#ba1a1a",
+                        "on-secondary-container": "#566676",
+                        "on-secondary-fixed-variant": "#384858",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#1a1c1b",
+                        "outline": "#74777b",
+                        "surface-tint": "#575f68",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "primary-container": "#141c23",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#f9f9f7",
+                        "on-tertiary-container": "#83847e",
+                        "surface-variant": "#e2e3e1",
+                        "tertiary-fixed": "#e3e3dc",
+                        "on-secondary-fixed": "#0c1d2b",
+                        "surface-dim": "#dadad8",
+                        "tertiary": "#000000"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "section-gap": "80px",
+                        "gutter": "32px",
+                        "container-max": "1280px",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Literata", "serif"],
+                        "headline-md": ["Literata", "serif"],
+                        "body-lg": ["Hanken Grotesk", "sans-serif"],
+                        "body-md": ["Hanken Grotesk", "sans-serif"],
+                        "label-sm": ["Hanken Grotesk", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-sm": ["13px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .ink-fade { mask-image: linear-gradient(to right, black 80%, transparent); }
+        .book-shadow { box-shadow: 0 20px 40px rgba(18, 26, 33, 0.05); }
+        .glass-nav { background: rgba(249, 249, 247, 0.8); backdrop-filter: blur(20px); }
+        .progress-bar-fill { animation: inkIn 1.5s cubic-bezier(0.65, 0, 0.35, 1) forwards; }
+        @keyframes inkIn { from { width: 0; } }
+    </style>
+</head>
+<body class="bg-background text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed overflow-x-hidden">
+<!-- TopAppBar -->
+<nav class="docked full-width top-0 sticky z-50 bg-surface/80 dark:bg-inverse-surface/80 backdrop-blur-xl border-b border-outline-variant dark:border-outline">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-gutter max-w-container-max mx-auto h-20">
+<div class="flex items-center gap-8">
+<a class="flex items-center" href="/">
+<img alt="BookStart Logo" class="h-10 w-auto" src="https://lh3.googleusercontent.com/aida/ADBb0uiHhTqE5oWIpg00gPE8qmuVPh18dJaLvxKttBvK_VZOZbXaxa-H0e4jS4BqHemg7kjeFU7SAtGaP1JI-XsSnT-3zJpGbKejoJQu8cbKOrgKM7OnGm36hkcMsyAwopyOfhpWNpR57P_20g4msL9SdUHTp8dYw14ux-tpd3_TsoRTB3nuIPcP7OmlmejSyHWbO9jbsFUvdODiCfK9TbtVIajt4CgdIkraUtIpjrXC_glrymdyEw0lg4nKcq8"/>
+</a>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-primary dark:text-inverse-primary font-bold border-b-2 border-primary dark:border-inverse-primary pb-1 font-label-sm text-label-sm" href="#">Campaigns</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200 font-label-sm text-label-sm" href="#">Books</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200 font-label-sm text-label-sm" href="#">Authors</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200 font-label-sm text-label-sm" href="#">News</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200 font-label-sm text-label-sm" href="#">About</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:text-primary transition-colors">search</button>
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:text-primary transition-colors">dark_mode</button>
+<button class="hidden md:block bg-primary text-on-primary px-6 py-2.5 rounded-sm font-label-sm text-label-sm scale-98 active:opacity-80 transition-transform uppercase tracking-wider">Launch Campaign</button>
+</div>
+</div>
+</nav>
+<main>
+<!-- Hero Section -->
+<section class="relative min-h-[80vh] flex items-center pt-10 overflow-hidden px-margin-mobile md:px-gutter max-w-container-max mx-auto gap-gutter grid grid-cols-1 md:grid-cols-12 mb-section-gap">
+<div class="md:col-span-6 flex flex-col justify-center z-10">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest mb-4">Предпродажи книг</span>
+<h1 class="font-display-lg text-display-lg text-primary mb-6 leading-tight">Собери на тираж — <br class="hidden lg:block"/>книга сама уйдет в печать</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8 max-w-lg">
+                    Загрузите готовый PDF, задайте цель сбора и поделитесь одной ссылкой. Когда сумма собрана, BookStart автоматически передаёт заказ в типографию.
+                </p>
+<div class="flex flex-wrap gap-4">
+<button class="bg-primary text-on-primary px-8 py-4 rounded-sm font-label-sm text-label-sm hover:opacity-90 transition-all flex items-center gap-2 group">
+                        Запустить кампанию
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+<button class="border border-outline px-8 py-4 rounded-sm font-label-sm text-label-sm hover:bg-surface-container-low transition-all">
+                        Примеры кампаний
+                    </button>
+</div>
+<div class="mt-12 flex gap-12 border-t border-outline-variant pt-8">
+<div>
+<div class="font-display-lg text-[32px] text-primary">0 ₽</div>
+<div class="font-label-sm text-label-sm text-secondary">Вложений автора</div>
+</div>
+<div>
+<div class="font-display-lg text-[32px] text-primary">5%</div>
+<div class="font-label-sm text-label-sm text-secondary">Комиссия сервиса</div>
+</div>
+</div>
+</div>
+<div class="md:col-span-6 relative h-[500px] md:h-full">
+<div class="absolute inset-0 bg-[#F0F0EB] rounded-sm transform translate-x-8 translate-y-8 -z-10 opacity-50"></div>
+<img class="w-full h-full object-cover rounded-sm book-shadow" data-alt="A beautiful close-up of an open book resting on a rustic wooden table in soft, dappled sunlight. The pages are crisp and creamy, casting gentle shadows that emphasize the physical texture of paper. The background is a soft-focus garden scene with warm golden hour lighting, creating a serene, phygital atmosphere that blends physical craft with digital elegance." src="https://lh3.googleusercontent.com/aida/ADBb0ujSGbGt4FH-kIUbP9kHcYOL4iqPK_3do7VOVdNrGBg2NhGPhPsbht8luPHVUQ9-pWmYz7LstwS_bwVfdk_wF0_Cch4zm7MTKHCBdRD07NvR_jQQBKstwNUAkPUheVSjt5IEGOhvGh1hm5cQ3ojSDg0vY19y7MX1bs3IAY8xGoVNRH7PcbzIWlpzdfNnbgKpvLG8FsD6jhcT8Fl2PmTZ54wVH_GmZkYtxZ7lxQZrebnKy2EHCb0PFQnx6bA"/>
+</div>
+</section>
+<!-- Vibe Filter -->
+<section class="px-margin-mobile md:px-gutter max-w-container-max mx-auto mb-16 overflow-x-auto">
+<div class="flex gap-4 items-center min-w-max pb-4">
+<span class="font-label-sm text-label-sm text-secondary uppercase mr-4">Настроение:</span>
+<button class="px-6 py-2 bg-primary text-on-primary rounded-full font-label-sm text-label-sm">Все</button>
+<button class="px-6 py-2 bg-surface-container-low hover:bg-surface-container-high transition-colors rounded-full font-label-sm text-label-sm">Меланхолия</button>
+<button class="px-6 py-2 bg-surface-container-low hover:bg-surface-container-high transition-colors rounded-full font-label-sm text-label-sm">Интеллект</button>
+<button class="px-6 py-2 bg-surface-container-low hover:bg-surface-container-high transition-colors rounded-full font-label-sm text-label-sm">Уют</button>
+<button class="px-6 py-2 bg-surface-container-low hover:bg-surface-container-high transition-colors rounded-full font-label-sm text-label-sm">Высокие ставки</button>
+<button class="px-6 py-2 bg-surface-container-low hover:bg-surface-container-high transition-colors rounded-full font-label-sm text-label-sm">Нуар</button>
+</div>
+</section>
+<!-- Hot Campaigns -->
+<section class="px-margin-mobile md:px-gutter max-w-container-max mx-auto mb-section-gap">
+<div class="flex justify-between items-end mb-8">
+<div>
+<h2 class="font-display-lg text-[32px] text-primary">Сейчас собирают</h2>
+<p class="font-body-md text-on-surface-variant">Проекты, близкие к завершению</p>
+</div>
+<a class="font-label-sm text-label-sm text-primary underline decoration-2 underline-offset-4" href="#">Смотреть все</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Campaign Card 1 -->
+<div class="group bg-surface-container-lowest border border-outline-variant p-4 rounded-sm hover:border-primary transition-colors cursor-pointer">
+<div class="relative overflow-hidden aspect-[4/5] mb-4 bg-[#f0f0eb] flex items-center justify-center p-8">
+<img class="w-full h-full object-contain book-shadow group-hover:scale-105 transition-transform duration-500" data-alt="A minimalist book cover design for a novel titled Echoes and Earth. The cover features organic, abstract shapes in soft muted tones of peach, sage green, and cream against an off-white paper texture. The typography is elegant and modern. The overall aesthetic is clean, sophisticated, and high-end, fitting the phygital minimalism theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADyFfYRqd0geczzJge1asDN-_sx6L293vXtV17NyYQVcN8RPOZ4PfLIMslNRrBaF5YcMUA3gtdfqCUBacxQFvfPd62JubYpj1G3JqTVlEGEOXU0Uq4sHbP_YgifoYjz8INUhzKDbdlblDUvkswXMS-3vW9E7JS86XIEV8KfGuAYpethJy3SWjIF3yNLaMvpRsSGFLzzKFgyxPMg9h6gKuOOwmggppid9ectiWGNZS0yQMokqEDy3YsT_tK6iSl2nHIS9dpoXEgoWY"/>
+<div class="absolute top-4 right-4 bg-error text-on-error px-2 py-1 font-label-sm text-[10px] uppercase rounded-sm">Горячо</div>
+</div>
+<div class="space-y-3">
+<h3 class="font-headline-md text-headline-md text-primary">Тихое Эхо</h3>
+<p class="font-label-sm text-label-sm text-secondary">Мария Громова</p>
+<div class="space-y-1">
+<div class="flex justify-between font-label-sm text-[12px]">
+<span>92% собрано</span>
+<span class="text-error font-bold">Осталось 4 дня</span>
+</div>
+<div class="h-1 w-full bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary progress-bar-fill" style="width: 92%"></div>
+</div>
+</div>
+<div class="flex justify-between items-center pt-2">
+<span class="font-headline-md text-primary">1 200 ₽</span>
+<button class="bg-primary text-on-primary px-4 py-2 font-label-sm text-label-sm scale-98 active:opacity-80 transition-transform">Предзаказ</button>
+</div>
+</div>
+</div>
+<!-- Campaign Card 2 -->
+<div class="group bg-surface-container-lowest border border-outline-variant p-4 rounded-sm hover:border-primary transition-colors cursor-pointer">
+<div class="relative overflow-hidden aspect-[4/5] mb-4 bg-[#f0f0eb] flex items-center justify-center p-8">
+<img class="w-full h-full object-contain book-shadow group-hover:scale-105 transition-transform duration-500" data-alt="A premium book cover for a title called Midnight Bloom. The background is a deep ink-black with delicate, high-contrast white line art of a blooming flower. The aesthetic is moody and intellectual, with a matte finish. High-end literary design with sharp typography, reflecting the sophisticated library-like atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKyDf-_EDmiERUy5b1QHS6Y_E_JepxhHo5giA6oRn5yqj3NFB9fOYfV2jDuF-Oqf3qKhABlu1EccSZQcrFLA_piqHOYUXxI0fy2nDgpfE3zuhwl5M9F8eNn97D1U7J6BEtx7bAlantqXm9nBJuS2lhmNNLPMwrqEKkyMCPl4bxF-tpHwAbEMU2xa7iycc_szFY3o4Vuu640Yc_Mj3C7iUpf2algECp9TVfiHgvGJrcE8qGfNEzLbvOGlKRcahe9akQWW0Ph1YykIE"/>
+<div class="absolute top-4 right-4 bg-primary text-on-primary px-2 py-1 font-label-sm text-[10px] uppercase rounded-sm">Бестселлер</div>
+</div>
+<div class="space-y-3">
+<h3 class="font-headline-md text-headline-md text-primary">Полночь в Саду</h3>
+<p class="font-label-sm text-label-sm text-secondary">Алексей Рейн</p>
+<div class="space-y-1">
+<div class="flex justify-between font-label-sm text-[12px]">
+<span>85% собрано</span>
+<span class="text-on-surface-variant">Осталось 12 дней</span>
+</div>
+<div class="h-1 w-full bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary progress-bar-fill" style="width: 85%"></div>
+</div>
+</div>
+<div class="flex justify-between items-center pt-2">
+<span class="font-headline-md text-primary">1 450 ₽</span>
+<button class="bg-primary text-on-primary px-4 py-2 font-label-sm text-label-sm scale-98 active:opacity-80 transition-transform">Предзаказ</button>
+</div>
+</div>
+</div>
+<!-- Campaign Card 3 -->
+<div class="group bg-surface-container-lowest border border-outline-variant p-4 rounded-sm hover:border-primary transition-colors cursor-pointer">
+<div class="relative overflow-hidden aspect-[4/5] mb-4 bg-[#f0f0eb] flex items-center justify-center p-8">
+<img class="w-full h-full object-contain book-shadow group-hover:scale-105 transition-transform duration-500" data-alt="A modern, architectural book cover titled Structure. The design uses bold geometric shadows and a high-contrast black and white palette. The typography is a clean, heavy sans-serif. The visual style is minimal and efficient, representing the intersection of digital precision and physical materiality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8g3c9r6TGtiHHSAGJrIwPVCXy9xqSLdlRGcZzfySq0GnOQluIUvfd_qz0gWiZH6zV-5Rq_3mVJG58j8b3AVCf6EYJFuPMShXgrlGQTX8Tvtx5VMmBY0Mo1fslD1fJy3GWu8g6AX0MeEbV7OWGnWG84SPWNCmL4ijq4PQZkTIZmlCcMC5tC23RKSCOa8FQBzn6YKOK6YKTfY3pYLB0zvnJNzQ2W9XPU0NC9_h570CnxCxc48ivj-V1-cVFcdihDp7HPRCHJpNiYNk"/>
+<div class="absolute top-4 right-4 bg-secondary text-on-secondary px-2 py-1 font-label-sm text-[10px] uppercase rounded-sm">Последние 10</div>
+</div>
+<div class="space-y-3">
+<h3 class="font-headline-md text-headline-md text-primary">Структура Мысли</h3>
+<p class="font-label-sm text-label-sm text-secondary">Елена Берг</p>
+<div class="space-y-1">
+<div class="flex justify-between font-label-sm text-[12px]">
+<span>98% собрано</span>
+<span class="text-error font-bold">Финал</span>
+</div>
+<div class="h-1 w-full bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary progress-bar-fill" style="width: 98%"></div>
+</div>
+</div>
+<div class="flex justify-between items-center pt-2">
+<span class="font-headline-md text-primary">990 ₽</span>
+<button class="bg-primary text-on-primary px-4 py-2 font-label-sm text-label-sm scale-98 active:opacity-80 transition-transform">Предзаказ</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Grid: Featured & News -->
+<section class="px-margin-mobile md:px-gutter max-w-container-max mx-auto mb-section-gap">
+<h2 class="font-display-lg text-[32px] text-primary mb-8">События и идеи</h2>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 h-auto md:h-[600px]">
+<!-- Main News Card -->
+<div class="md:col-span-2 md:row-span-2 bg-[#F2F2ED] p-8 flex flex-col justify-between group overflow-hidden relative">
+<div class="z-10">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest mb-4 block">Редакция рекомендует</span>
+<h3 class="font-display-lg text-[32px] text-primary mb-4 leading-tight group-hover:underline">Книги, которые читаются на одном дыхании</h3>
+<p class="font-body-md text-on-surface-variant max-w-sm">Пять захватывающих романов с высокой дочитываемостью по данным нашей платформы за этот месяц.</p>
+</div>
+<div class="z-10 pt-8">
+<a class="inline-flex items-center gap-2 font-label-sm text-label-sm text-primary uppercase border-b border-primary pb-1" href="#">Читать подборку</a>
+</div>
+<img class="absolute right-0 bottom-0 w-1/2 opacity-20 transform translate-x-1/4 translate-y-1/4 group-hover:scale-110 transition-transform duration-700" data-alt="A pile of diverse books arranged artistically with soft lighting hitting the spines. The shot is high-angle, showing varying textures of paper and fabric covers. The lighting is warm and natural, creating an inviting, intellectual mood that emphasizes the physical pleasure of reading." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnSt4WrJBUDkM7qc0GTzPpKDytpVdU8DMIfeaw8N5vmq_xAFOC3Q9N9FWh1ofFV9YfvFqIKoFv75hnIHkXVZOdBWK8WsONiD4HiOYDqpsSkh4AaQFYvTixQutqab8OUfRvzSVuOKhGDyBy9Y7pgbCn4IYH-4GLMN2kpS3VwPVAcir3-8Zyxi-FlqjdUC3yTDvsw5OOzj7Is8qSGTTbPhm37QaqLOajnHJ2z82_W2mOJOHUPTNEw8BU3jn9rBiHZWvChWk_R2l0beU"/>
+</div>
+<!-- Secondary Card -->
+<div class="md:col-span-2 bg-primary text-on-primary p-8 flex flex-col justify-center">
+<span class="font-label-sm text-label-sm text-on-primary/70 uppercase tracking-widest mb-2 block">Челлендж</span>
+<h3 class="font-headline-md text-headline-md mb-4">Новый сезонный вызов BookStart</h3>
+<p class="font-body-md text-on-primary/80 mb-6">Три уровня сложности и поддержка сообщества. Присоединяйтесь к читателям со всей страны.</p>
+<button class="w-fit border border-on-primary px-6 py-2 font-label-sm text-label-sm hover:bg-on-primary hover:text-primary transition-colors">Узнать больше</button>
+</div>
+<!-- Small Grid Items -->
+<div class="bg-surface-container-lowest border border-outline-variant p-6 flex flex-col justify-between">
+<div>
+<div class="font-label-sm text-label-sm text-secondary mb-2">30.11.23</div>
+<h4 class="font-body-lg font-bold text-primary">Итоги месяца: выбор пользователей</h4>
+</div>
+<a class="material-symbols-outlined text-primary hover:translate-x-2 transition-transform" href="#">arrow_forward</a>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-6 flex flex-col justify-between">
+<div>
+<div class="font-label-sm text-label-sm text-secondary mb-2">Партнерство</div>
+<h4 class="font-body-lg font-bold text-primary">СДЭК: новые условия доставки</h4>
+</div>
+<a class="material-symbols-outlined text-primary hover:translate-x-2 transition-transform" href="#">arrow_forward</a>
+</div>
+</div>
+</section>
+<!-- Catalog Archive -->
+<section class="bg-surface-container py-section-gap px-margin-mobile md:px-gutter">
+<div class="max-w-container-max mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-baseline mb-12 gap-4">
+<h2 class="font-display-lg text-display-lg text-primary">Уже напечатаны</h2>
+<p class="font-body-lg text-on-surface-variant max-w-md">История успеха: эти книги прошли путь от идеи до физического тиража благодаря вам.</p>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-gutter">
+<!-- Iterative Small Cards -->
+<div class="space-y-4 cursor-pointer group">
+<div class="aspect-[3/4] bg-white p-6 book-shadow overflow-hidden flex items-center justify-center">
+<img class="w-full h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="A minimalist book spine and front cover in black and white. The design is stark and modern, utilizing negative space. The lighting is sharp, creating a graphic quality. Part of a collection of successful crowdfunding projects, showcasing high-quality physical results." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQ35-Eu11sNUeEaPdNHq8lGam2UvBRbXRKxkiEGofbkP4p7yEFw0mBHr6AiXWHAZo7jKSbZ3zZCTh7kK5RehxgBKRpe23DM-ZBzyAl6y2aUV93-4AtjWLw7ZDhENZB1gZuCo1KGTYd4zDRdJChoryz6p9WX9_DGV7L7rFmcqFFUhWKcSUqK6RgkmJXOxkKCzSJuxBvz60NOVtggZuP_8k7vhw8Cm2VP7FPMEBcPd4BTqp_GoSKXYviWP9bdi-mJYykCKM-W5Mc7uA"/>
+</div>
+<div>
+<h4 class="font-body-md font-bold text-primary">Архитектура Сна</h4>
+<p class="font-label-sm text-label-sm text-secondary">Д. Меньшиков</p>
+</div>
+</div>
+<!-- Repeat 4 more -->
+<div class="space-y-4 cursor-pointer group">
+<div class="aspect-[3/4] bg-white p-6 book-shadow overflow-hidden flex items-center justify-center">
+<img class="w-full h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="A textured book cover with a soft linen finish in a pale clay color. The title is embossed in a deep brown serif font. Elegant, tactile, and physical, this image represents the premium manufacturing quality of the BookStart platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhevZ3BomrFosq2T_m2wRUl-AudShIXV3geJOWKvBmYPqio1aVe9mo4JmuJ2lbMB5ER8ogYzlSJW82z8q--5rz2LOn_W5u1pvDDnL0la54uZWep4Z8TktYDi_Gzq5M8CTL9muZqJyyzR1UwtjBWxg2_vlbNf4MRDEzTW4_KVRzLdVLDnjEyY6x0smzRUgtRDeruACy9WP2M9Kq0m1xHcdYdKMcS52t4KdB4h6MkF2Kytxq-3AuY0yrCCgK_cIvdhSD9cCjeSjRc8Y"/>
+</div>
+<div>
+<h4 class="font-body-md font-bold text-primary">Глина и Свет</h4>
+<p class="font-label-sm text-label-sm text-secondary">О. Коваль</p>
+</div>
+</div>
+<div class="space-y-4 cursor-pointer group">
+<div class="aspect-[3/4] bg-white p-6 book-shadow overflow-hidden flex items-center justify-center">
+<img class="w-full h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="A photographic book cover featuring a dramatic mountain landscape at night. The colors are deep blues and purples, with crisp white typography for the title 'Horizon'. A modern travel or poetry collection design that looks professional and high-end." src="https://lh3.googleusercontent.com/aida-public/AB6AXuArMM_CAKMpAuBeIftWCL2oTVXAW4KNdtgmHpGtCB5SMnfE1ZAJvubJZsZFfGInq2oeUjaqG1NPVdDNmiN_kPadrhRW6mu4Dfc9XNYVv7ACOIkgYruqxmgab2iicde1cddmWlEoe92RUnikHixSJOdukyDk7pbIqgj1AVG8mCQ7J9Gr4amzov60R5tIjMABfiz0Ldo9P8krco7_OKpivlYiGCQvZ3oCQ9TITjTW7Y5uCntfd2XTLw7I3d11LF4CClNERxWbscYnAio"/>
+</div>
+<div>
+<h4 class="font-body-md font-bold text-primary">Горизонты</h4>
+<p class="font-label-sm text-label-sm text-secondary">В. Север</p>
+</div>
+</div>
+<div class="space-y-4 cursor-pointer group">
+<div class="aspect-[3/4] bg-white p-6 book-shadow overflow-hidden flex items-center justify-center">
+<img class="w-full h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="A clean, typographic book cover with a focus on bold serif lettering. The design is centered, using a classic editorial layout. Soft cream paper texture background with ink-black text. Represents the timeless quality of traditional bookmaking." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvn-RLCix0HEo0jOhxmPAHcTcHPO-Q6mf-RvewhKT_15do9RPeI9UaJkX0cTTsmP5hwwy2_AGWDElSjRYsyrbH6i8U0gblK43wPDoOxiphHKUWR8OFOCHBWcu_t7VR3IlrLviUFYWeN6t2fYKXfai4qg0sldPOni6EW1XKmfFkRR7FIqMosSor71iLdJ20flRkd6ILBiLeP4cVh1IB1SLhHCMXeltwBVYLHQ9PyoMdomMkmpHrqbB_p2JnTwGJKOswp-hHK0dGdQw"/>
+</div>
+<div>
+<h4 class="font-body-md font-bold text-primary">Слова и Вещи</h4>
+<p class="font-label-sm text-label-sm text-secondary">А. Фуко (Пер.)</p>
+</div>
+</div>
+<div class="space-y-4 cursor-pointer group hidden lg:block">
+<div class="aspect-[3/4] bg-white p-6 book-shadow overflow-hidden flex items-center justify-center">
+<img class="w-full h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="A scholarly or technical book cover with a precise, grid-based design. The cover uses fine lines and small annotations to create an intellectual, detailed aesthetic. High contrast and minimalist, echoing the functional yet beautiful design philosophy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCd_YOoKmyzBgZetHCQtLqgp6szv4JCFYCkr9JFqkmfMnUVWN7oIhNUMOkuJMWBc2dNagPJ2GHHaJCTbrooKbnosAh2H89WpFopyvf9jGjtoyLIPUvl1hb8lRdp3_LdBRaQt3j4dRcsDSUBguctwNcgemkY6UEK-DNC57eeizmi70H3vDwOpHRhKe2rzuZS4rSGz66SdtIua6pWMKuEhj0D3mZGL23T_VJIy-xLyfnQuDx5pVjlXVxZJQ_ChkHIgthl12ps_QeCXDU"/>
+</div>
+<div>
+<h4 class="font-body-md font-bold text-primary">Логика Систем</h4>
+<p class="font-label-sm text-label-sm text-secondary">Н. Луман</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Authors Section -->
+<section class="px-margin-mobile md:px-gutter max-w-container-max mx-auto py-section-gap">
+<h2 class="font-display-lg text-[32px] text-primary mb-12 text-center">Наши авторы</h2>
+<div class="flex flex-wrap justify-center gap-12">
+<div class="text-center group max-w-[150px]">
+<div class="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden filter grayscale group-hover:grayscale-0 transition-all">
+<img class="w-full h-full object-cover" data-alt="Professional portrait of a young female author in a bright, minimalist studio. She has a thoughtful expression, wearing a simple linen shirt. Soft, high-key lighting creates a clean, modern aesthetic that fits the phygital minimalism style of the platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaFQOT49QlnFnu0DbJ2veWZgrXazi8vtXWX21aJ-wVK33_3S2lTqWsSp_8EquGDXdtT4rjvfyqh0aHp9JYl88SYM34Gv6IFnQ0TImhsAADRRRYySUUSnAmh01_S8HWHhm_89zXgkdQMtGfjpPsgBxfsXqWLFig3tOdFPbOnWfbwEZFJNw4bYW-Y0NezSS4jwYDXAyXd0r63wRifpchR9fqsstYFwJj_OKmYVslLvWi-lavSz4TUsGyfbWxvvC52-CWy2cyqwHCJm4"/>
+</div>
+<h4 class="font-body-md font-bold text-primary">Мария Громова</h4>
+<p class="font-label-sm text-label-sm text-secondary">Проза, Поэзия</p>
+</div>
+<div class="text-center group max-w-[150px]">
+<div class="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden filter grayscale group-hover:grayscale-0 transition-all">
+<img class="w-full h-full object-cover" data-alt="Portrait of a male author with a beard, wearing glasses and a dark sweater. The background is a blurred library, suggesting intellectual depth. The lighting is moody and focused, creating a sense of trust and creative experience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBia-u5D0tgQAzKhjUcIIPwhazPpDFtKtNeB4lTkJlBC3R33AfAf5BKmFQzTKskT2KwlMBZTV-nqO7t0rZLR_DvR6_0i67-HGn1Jbzsbap-rCG6lTAa5w7_c2IPpOOrDm1NRdhOazZoEeXjM6DjjRzbAaFizdgNZsRrPzjQmKvCa3MkWh6SZBM3VywqVczMx_rwN0NQjeDiJyrByW6MpBOPixszx3hDhocOLpJbceo5LWHCrH5PMrV_52gzmar_qFYfiu4wjQoP_YM"/>
+</div>
+<h4 class="font-body-md font-bold text-primary">Алексей Рейн</h4>
+<p class="font-label-sm text-label-sm text-secondary">Детективы, Нуар</p>
+</div>
+<div class="text-center group max-w-[150px]">
+<div class="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden filter grayscale group-hover:grayscale-0 transition-all">
+<img class="w-full h-full object-cover" data-alt="Editorial portrait of a woman with artistic styling, soft natural lighting, and a neutral background. The mood is creative and professional, reflecting the platform's commitment to high-quality literary production." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB28LJ2sGrzV_sMht050vV9N_GfGtxiz9WWTMpTmv21qmjbrfwEtuWp0HQpt-V6BvwQJwBcyuLP-thmL4H5uIEG442R-DML26_SCeiaNJP80WMEB-INx6ZWsYigXT1QMMmu2gc-ewcb3YrTiLVDSOgEu9Z1aMD5uuvEAfPUcerzHf3AF-4vwGVSD3iU-VHS36xaDPktZMG0a27qR9HDOqs3xordfXNSCBFKCCgRmTjWrAWJUxik0rm-28a0L6i3ltINxwy_-vhjKEM"/>
+</div>
+<h4 class="font-body-md font-bold text-primary">Елена Берг</h4>
+<p class="font-label-sm text-label-sm text-secondary">Научпоп, Логика</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="full-width bg-primary-container dark:bg-surface-container-lowest text-on-primary-container dark:text-on-surface py-section-gap border-t border-outline">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-gutter max-w-container-max mx-auto">
+<div class="space-y-6">
+<img alt="BookStart Logo" class="h-8 brightness-0 invert" src="https://lh3.googleusercontent.com/aida/ADBb0uiHhTqE5oWIpg00gPE8qmuVPh18dJaLvxKttBvK_VZOZbXaxa-H0e4jS4BqHemg7kjeFU7SAtGaP1JI-XsSnT-3zJpGbKejoJQu8cbKOrgKM7OnGm36hkcMsyAwopyOfhpWNpR57P_20g4msL9SdUHTp8dYw14ux-tpd3_TsoRTB3nuIPcP7OmlmejSyHWbO9jbsFUvdODiCfK9TbtVIajt4CgdIkraUtIpjrXC_glrymdyEw0lg4nKcq8"/>
+<p class="font-body-md text-body-md opacity-80">Собери цель — книга сама уходит в печать и к читателям. Без вложений автора.</p>
+<div class="flex gap-4">
+<a class="font-label-sm text-label-sm hover:underline" href="#">ВКонтакте</a>
+<a class="font-label-sm text-label-sm hover:underline" href="#">Telegram</a>
+</div>
+</div>
+<div>
+<h4 class="font-label-sm text-label-sm font-bold uppercase mb-6 tracking-wider">Кампании</h4>
+<ul class="space-y-4 font-body-md text-body-md opacity-70">
+<li><a class="hover:opacity-100 transition-opacity" href="#">Все кампании</a></li>
+<li><a class="hover:opacity-100 transition-opacity" href="#">Сейчас собирают</a></li>
+<li><a class="hover:opacity-100 transition-opacity" href="#">Уже напечатаны</a></li>
+<li><a class="hover:opacity-100 transition-opacity" href="#">Книги в каталоге</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-sm text-label-sm font-bold uppercase mb-6 tracking-wider">Авторам</h4>
+<ul class="space-y-4 font-body-md text-body-md opacity-70">
+<li><a class="hover:opacity-100 transition-opacity" href="#">Как это работает</a></li>
+<li><a class="hover:opacity-100 transition-opacity" href="#">Калькулятор сбора</a></li>
+<li><a class="hover:opacity-100 transition-opacity" href="#">Вопросы и ответы</a></li>
+<li><a class="hover:opacity-100 transition-opacity" href="#">Правовая информация</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-sm text-label-sm font-bold uppercase mb-6 tracking-wider">Поддержка</h4>
+<ul class="space-y-4 font-body-md text-body-md opacity-70">
+<li>support@book-start.ru</li>
+<li>Россия, Москва</li>
+<li class="pt-4">
+<label class="block font-label-sm text-label-sm mb-2 opacity-50">Рассылка для авторов</label>
+<div class="flex border-b border-on-primary-container/30 py-2">
+<input class="bg-transparent border-none outline-none focus:ring-0 p-0 w-full placeholder:opacity-30 uppercase font-label-sm tracking-widest" placeholder="EMAIL" type="email"/>
+<button class="material-symbols-outlined opacity-50 hover:opacity-100">arrow_forward</button>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-gutter mt-20 pt-8 border-t border-on-primary-container/10 flex flex-col md:flex-row justify-between items-center gap-4">
+<span class="font-label-sm text-label-sm opacity-50">© 2026 Book-Start. Все физические права защищены.</span>
+<div class="flex gap-8 opacity-50 font-label-sm text-label-sm">
+<a class="hover:underline" href="#">Условия сервиса</a>
+<a class="hover:underline" href="#">Конфиденциальность</a>
+</div>
+</div>
+</footer>
+<!-- FAB -->
+<button class="fixed bottom-8 right-8 bg-primary text-on-primary w-14 h-14 rounded-full flex items-center justify-center book-shadow md:hidden z-40 scale-98 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">add</span>
+</button>
+<script>
+        // Micro-interactions and subtle effects
+        document.querySelectorAll('button, a').forEach(el => {
+            el.addEventListener('mousedown', () => {
+                el.style.transform = 'scale(0.96)';
+            });
+            el.addEventListener('mouseup', () => {
+                el.style.transform = '';
+            });
+            el.addEventListener('mouseleave', () => {
+                el.style.transform = '';
+            });
+        });
+
+        // Sticky nav shadow toggle on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 20) {
+                nav.classList.add('shadow-sm');
+            } else {
+                nav.classList.remove('shadow-sm');
+            }
+        });
+    </script>
+</body></html>
