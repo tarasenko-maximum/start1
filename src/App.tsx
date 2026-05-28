@@ -335,14 +335,14 @@ export default function App() {
     <div className="min-h-screen bg-background text-on-surface paper-texture selection:bg-primary-fixed selection:text-on-primary-fixed flex flex-col font-sans">
       
       {/* --- Header / TopAppBar --- */}
-      <nav className="sticky top-0 z-40 glass-nav border-b border-outline-variant transition-all duration-200">
-        <div className="flex justify-between items-center w-full px-5 md:px-8 max-w-[1280px] mx-auto h-20">
+      <nav className="sticky top-0 z-40 glass-nav border-b border-outline-variant transition-all duration-200 shadow-sm/50">
+        <div className="flex justify-between items-center w-full px-5 md:px-8 max-w-[1280px] mx-auto py-5 min-h-[96px]">
           <div className="flex items-center gap-8">
-            <button onClick={() => navigateTo('home')} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-              <img src="/logo.png" alt="Издательство СТАРТ" className="h-11 w-auto object-contain" />
-              <span className="group/nav-tooltip relative bg-primary/5 border border-primary/10 text-primary font-mono text-[8px] sm:text-[9px] font-bold tracking-widest px-2 py-0.5 rounded uppercase ml-1 cursor-help">
+            <button onClick={() => navigateTo('home')} className="flex items-center gap-3.5 hover:opacity-85 transition-opacity cursor-pointer">
+              <img src="/logo.png" alt="Издательство СТАРТ" className="h-16 md:h-18 w-auto object-contain drop-shadow-sm" />
+              <span className="group/nav-tooltip relative bg-primary/5 border border-primary/10 text-primary font-mono text-[8px] sm:text-[9px] font-bold tracking-widest px-2.5 py-1 rounded uppercase ml-1 cursor-help hover:bg-primary/10 transition-colors">
                 Автоматическая печать
-                <span className="absolute left-1/2 -translate-x-1/2 top-6 hidden group-hover/nav-tooltip:block bg-slate-900 text-white text-[10px] rounded p-2 w-48 shadow-lg z-20 font-sans leading-normal normal-case font-medium">
+                <span className="absolute left-1/2 -translate-x-1/2 top-8 hidden group-hover/nav-tooltip:block bg-slate-900 text-white text-[10px] rounded p-2.5 w-52 shadow-lg z-20 font-sans leading-normal normal-case font-medium text-center">
                   🖨️ Print-on-Demand: книга отправляется в печать автоматически при 100% сборов.
                 </span>
               </span>
@@ -764,8 +764,14 @@ const HomeView: React.FC<HomeViewProps> = ({
   return (
     <div className="pb-24">
       {/* Hero Section */}
-      <section className="relative min-h-[85vh] flex items-center pt-8 overflow-hidden px-5 md:px-8 max-w-[1280px] mx-auto gap-8 grid grid-cols-1 md:grid-cols-12 mb-16">
-        <div className="md:col-span-6 flex flex-col justify-center z-10">
+      <section className="relative min-h-[85vh] flex items-center pt-12 pb-16 overflow-hidden px-5 md:px-8 max-w-[1280px] mx-auto gap-8 grid grid-cols-1 lg:grid-cols-12 mb-16 glow-bg rounded-lg">
+        {/* Subtle decorative grid lines representing book layout margins */}
+        <div className="absolute top-0 left-0 w-full h-[1px] bg-outline-variant/30"></div>
+        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-outline-variant/30"></div>
+        <div className="absolute top-0 left-[12%] w-[1px] h-full bg-outline-variant/15 hidden xl:block"></div>
+        <div className="absolute top-0 right-[12%] w-[1px] h-full bg-outline-variant/15 hidden xl:block"></div>
+
+        <div className="lg:col-span-6 flex flex-col justify-center z-10 animate-fade-in-up">
           <span className="font-sans text-[11px] font-bold text-secondary uppercase tracking-widest mb-4 block">Платформа предзаказов для независимых авторов</span>
           <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-primary font-bold mb-6 leading-[1.2] tracking-tight">
             Для авторов: собери на тираж. <br />
@@ -806,19 +812,22 @@ const HomeView: React.FC<HomeViewProps> = ({
           </div>
         </div>
         
-        <div className="md:col-span-6 relative h-[380px] md:h-[500px] flex items-center justify-center">
-          <div className="absolute inset-0 bg-surface-container-highest rounded-lg transform translate-x-4 translate-y-4 -z-10 opacity-60"></div>
-          <div className="w-full h-full border border-outline-variant bg-[#F0F0EB] p-8 flex items-center justify-center relative rounded">
+        <div className="lg:col-span-6 relative h-[380px] md:h-[500px] flex items-center justify-center z-10 cover-tilt-container animate-fade-in-up" style={{ animationDelay: '0.15s' }}>
+          {/* Subtle warm glow behind the book */}
+          <div className="absolute w-72 h-72 bg-amber-200/25 blur-3xl rounded-full -z-10 animate-pulse-subtle"></div>
+          
+          <div className="absolute inset-0 bg-surface-container-highest rounded-sm transform translate-x-3 translate-y-3 -z-10 opacity-60 border border-outline-variant/40"></div>
+          <div className="w-full h-full border border-outline-variant bg-[#F0F0EB] p-8 flex items-center justify-center relative rounded-sm group">
             <img 
               alt="Book mockup" 
-              className="max-h-[85%] object-contain book-shadow rotate-[-2deg] hover:rotate-0 transition-transform duration-500" 
+              className="max-h-[88%] object-contain book-shadow cover-tilt-active group-hover:book-shadow-hover" 
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuADyFfYRqd0geczzJge1asDN-_sx6L293vXtV17NyYQVcN8RPOZ4PfLIMslNRrBaF5YcMUA3gtdfqCUBacxQFvfPd62JubYpj1G3JqTVlEGEOXU0Uq4sHbP_YgifoYjz8INUhzKDbdlblDUvkswXMS-3vW9E7JS86XIEV8KfGuAYpethJy3SWjIF3yNLaMvpRsSGFLzzKFgyxPMg9h6gKuOOwmggppid9ectiWGNZS0yQMokqEDy3YsT_tK6iSl2nHIS9dpoXEgoWY" 
             />
-            <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur border border-outline-variant p-3.5 rounded shadow-sm text-left max-w-xs flex gap-3.5 items-center">
-              <span className="material-symbols-outlined text-amber-600 bg-amber-50 p-2 rounded-full">local_shipping</span>
+            <div className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur border border-outline-variant/70 p-3.5 rounded shadow-md text-left flex gap-3.5 items-center transform group-hover:-translate-y-1 transition-transform duration-300">
+              <span className="material-symbols-outlined text-amber-600 bg-amber-50 p-2.5 rounded">local_shipping</span>
               <div>
-                <h5 className="font-sans text-xs font-bold text-primary">Автоматизация POD 2.0</h5>
-                <p className="font-sans text-[11px] text-slate-500 leading-snug mt-0.5">Книги отправляются в печать и СДЭК в течение 24 часов после успеха сбора.</p>
+                <h5 className="font-sans text-xs font-bold text-primary">Автоматическая печать</h5>
+                <p className="font-sans text-[10px] text-slate-500 leading-snug mt-0.5">Книги отправляются в печать и СДЭК автоматически после достижения цели.</p>
               </div>
             </div>
           </div>
@@ -826,15 +835,15 @@ const HomeView: React.FC<HomeViewProps> = ({
       </section>
 
       {/* How It Works Section */}
-      <section className="px-5 md:px-8 py-20 bg-surface-container border-y border-outline-variant scroll-mt-24 mb-16" id="how-it-works">
+      <section className="px-5 md:px-8 py-20 bg-surface-container border-y border-outline-variant scroll-mt-24 mb-16 glow-bg-warm" id="how-it-works">
         <div className="max-w-[1280px] mx-auto text-center">
           <span className="font-sans text-[11px] font-bold text-secondary uppercase tracking-widest block mb-3">Простой и безопасный процесс</span>
           <h2 className="font-serif text-3xl md:text-4xl text-primary font-bold mb-12">Как работает BookStart</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-left">
-            <div className="bg-surface-container-lowest border border-outline-variant p-6 rounded-sm shadow-sm flex flex-col justify-between h-full">
+            <div className="bg-surface-container-lowest border border-outline-variant p-6 rounded-sm shadow-sm flex flex-col justify-between h-full editorial-grid-card group hover:-translate-y-1 transition-all duration-300">
               <div>
-                <span className="font-serif text-3xl font-bold text-secondary mb-4 block font-mono">01</span>
+                <span className="font-serif text-3xl font-bold text-secondary mb-4 block font-mono group-hover:text-primary transition-colors">01</span>
                 <h3 className="font-serif text-lg font-bold text-primary mb-2">Создание кампании</h3>
                 <p className="font-sans text-xs text-slate-600 leading-relaxed">
                   Автор рассчитывает тираж в калькуляторе и загружает PDF-макет книги. Мы проверяем файл на соответствие техническим стандартам печати (препресс).
@@ -842,9 +851,9 @@ const HomeView: React.FC<HomeViewProps> = ({
               </div>
             </div>
 
-            <div className="bg-surface-container-lowest border border-outline-variant p-6 rounded-sm shadow-sm flex flex-col justify-between h-full">
+            <div className="bg-surface-container-lowest border border-outline-variant p-6 rounded-sm shadow-sm flex flex-col justify-between h-full editorial-grid-card group hover:-translate-y-1 transition-all duration-300">
               <div>
-                <span className="font-serif text-3xl font-bold text-secondary mb-4 block font-mono">02</span>
+                <span className="font-serif text-3xl font-bold text-secondary mb-4 block font-mono group-hover:text-primary transition-colors">02</span>
                 <h3 className="font-serif text-lg font-bold text-primary mb-2">Предзаказ читателями</h3>
                 <p className="font-sans text-xs text-slate-600 leading-relaxed">
                   Мы открываем страницу сбора. Читатели выбирают интересные уровни поддержки (книга, автограф, мерч) и оплачивают предзаказ на сайте.
@@ -852,7 +861,7 @@ const HomeView: React.FC<HomeViewProps> = ({
               </div>
             </div>
 
-            <div className="bg-surface-container-lowest border border-outline-variant p-6 rounded-sm shadow-sm border-amber-500/30 bg-amber-50/20 flex flex-col justify-between h-full relative">
+            <div className="bg-surface-container-lowest border border-outline-variant p-6 rounded-sm shadow-sm border-amber-500/30 bg-amber-50/20 flex flex-col justify-between h-full relative editorial-grid-card group hover:-translate-y-1 transition-all duration-300">
               <span className="absolute top-3 right-3 bg-amber-500/10 text-amber-700 px-2 py-0.5 rounded-sm font-sans text-[9px] font-bold uppercase tracking-wider">Гарантия</span>
               <div>
                 <span className="font-serif text-3xl font-bold text-amber-600 mb-4 block font-mono">03</span>
@@ -863,9 +872,9 @@ const HomeView: React.FC<HomeViewProps> = ({
               </div>
             </div>
 
-            <div className="bg-surface-container-lowest border border-outline-variant p-6 rounded-sm shadow-sm flex flex-col justify-between h-full">
+            <div className="bg-surface-container-lowest border border-outline-variant p-6 rounded-sm shadow-sm flex flex-col justify-between h-full editorial-grid-card group hover:-translate-y-1 transition-all duration-300">
               <div>
-                <span className="font-serif text-3xl font-bold text-secondary mb-4 block font-mono">04</span>
+                <span className="font-serif text-3xl font-bold text-secondary mb-4 block font-mono group-hover:text-primary transition-colors">04</span>
                 <h3 className="font-serif text-lg font-bold text-primary mb-2">Печать и доставка</h3>
                 <p className="font-sans text-xs text-slate-600 leading-relaxed">
                   При достижении 100% сборов заказ моментально улетает в автоматическую печать по технологии Print-on-Demand и рассылается покупателям через СДЭК/Boxberry.
@@ -956,13 +965,13 @@ const HomeView: React.FC<HomeViewProps> = ({
                 >
                   <div>
                     {/* Book Cover Container */}
-                    <div className="relative aspect-[4/5] bg-surface-container-low border border-outline-variant/30 flex items-center justify-center p-8 overflow-hidden mb-5">
+                    <div className="relative aspect-[4/5] bg-surface-container-low border border-outline-variant/20 flex items-center justify-center p-8 overflow-hidden mb-5 cover-tilt-container rounded-sm">
                       <img 
                         src={camp.coverUrl} 
                         alt={camp.title} 
-                        className="h-full object-contain book-shadow group-hover:scale-105 transition-transform duration-500" 
+                        className="h-[92%] object-contain book-shadow cover-tilt-active group-hover:book-shadow-hover" 
                       />
-                      <span className="absolute top-3 left-3 bg-primary/10 text-primary border border-primary/20 px-2 py-0.5 rounded-sm font-sans text-[10px] uppercase font-bold tracking-wider">
+                      <span className="absolute top-3 left-3 bg-primary/10 text-primary border border-primary/20 px-2 py-0.5 rounded-sm font-sans text-[10px] uppercase font-bold tracking-wider z-10">
                         {camp.vibe}
                       </span>
                       {percent >= 90 && (
@@ -1188,11 +1197,11 @@ const HomeView: React.FC<HomeViewProps> = ({
               onClick={() => onSelectCampaign(camp.id)}
               className="space-y-3 cursor-pointer group"
             >
-              <div className="aspect-[3/4] bg-white p-5 border border-outline-variant/60 book-shadow overflow-hidden flex items-center justify-center relative">
+              <div className="aspect-[3/4] bg-surface-container-lowest p-5 border border-outline-variant/60 book-shadow overflow-hidden flex items-center justify-center relative cover-tilt-container">
                 <img 
                   src={camp.coverUrl} 
                   alt={camp.title} 
-                  className="max-h-[90%] object-contain grayscale group-hover:grayscale-0 group-hover:scale-102 transition-all duration-300" 
+                  className="max-h-[90%] object-contain grayscale group-hover:grayscale-0 cover-tilt-active group-hover:book-shadow-hover transition-all duration-300" 
                 />
                 <span className="absolute bottom-2 right-2 bg-green-100 text-green-800 border border-green-200 px-2 py-0.5 rounded-sm font-sans text-[9px] uppercase font-bold tracking-wider">
                   {camp.status === 'printing' ? 'В печати' : 'У авторов'}
