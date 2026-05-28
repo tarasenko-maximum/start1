@@ -261,6 +261,21 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState<string>('home');
   const [selectedCampaignId, setSelectedCampaignId] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<'buyer' | 'author'>('buyer');
+  const [isDevOpen, setIsDevOpen] = useState<boolean>(false);
+
+  const handlePromoNav = (anchorId: string) => {
+    if (currentPage !== 'home' || selectedCampaignId !== null) {
+      setCurrentPage('home');
+      setSelectedCampaignId(null);
+      setTimeout(() => {
+        const el = document.getElementById(anchorId);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      const el = document.getElementById(anchorId);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
   
   // --- Data States ---
   const [campaigns, setCampaigns] = useState<Campaign[]>(INITIAL_CAMPAIGNS);
@@ -325,63 +340,51 @@ export default function App() {
           <div className="flex items-center gap-8">
             <button onClick={() => navigateTo('home')} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
               <img src="/logo.png" alt="Издательство СТАРТ" className="h-11 w-auto object-contain" />
-              <span className="bg-primary/5 border border-primary/10 text-primary font-mono text-[9px] font-bold tracking-widest px-2 py-0.5 rounded uppercase ml-1">POD 2.0</span>
+              <span className="group/nav-tooltip relative bg-primary/5 border border-primary/10 text-primary font-mono text-[8px] sm:text-[9px] font-bold tracking-widest px-2 py-0.5 rounded uppercase ml-1 cursor-help">
+                Автоматическая печать
+                <span className="absolute left-1/2 -translate-x-1/2 top-6 hidden group-hover/nav-tooltip:block bg-slate-900 text-white text-[10px] rounded p-2 w-48 shadow-lg z-20 font-sans leading-normal normal-case font-medium">
+                  🖨️ Print-on-Demand: книга отправляется в печать автоматически при 100% сборов.
+                </span>
+              </span>
             </button>
             
             <div className="hidden md:flex items-center gap-8 font-sans text-[13px] font-semibold uppercase tracking-wider text-slate-500">
               <button 
-                onClick={() => navigateTo('home')} 
-                className={`hover:text-primary transition-colors py-1 ${currentPage === 'home' && !selectedCampaignId ? 'text-primary border-b-2 border-primary' : ''}`}
+                onClick={() => handlePromoNav('catalog')} 
+                className="hover:text-primary transition-colors py-1 cursor-pointer"
               >
                 Кампании
               </button>
               <button 
-                onClick={() => {
-                  setUserRole('buyer');
-                  navigateTo('buyer-dashboard');
-                }} 
-                className={`hover:text-primary transition-colors py-1 ${currentPage === 'buyer-dashboard' ? 'text-primary border-b-2 border-primary' : ''}`}
+                onClick={() => handlePromoNav('how-it-works')} 
+                className="hover:text-primary transition-colors py-1 cursor-pointer"
               >
-                Мои Предзаказы
+                Как это работает
               </button>
               <button 
-                onClick={() => {
-                  setUserRole('author');
-                  navigateTo('author-dashboard');
-                }} 
-                className={`hover:text-primary transition-colors py-1 ${currentPage === 'author-dashboard' ? 'text-primary border-b-2 border-primary' : ''}`}
+                onClick={() => handlePromoNav('calculator')} 
+                className="hover:text-primary transition-colors py-1 cursor-pointer"
               >
-                Кабинет Издателя
+                Авторам
+              </button>
+              <button 
+                onClick={() => handlePromoNav('about-us')} 
+                className="hover:text-primary transition-colors py-1 cursor-pointer"
+              >
+                О нас
               </button>
             </div>
           </div>
 
           <div className="flex items-center gap-4">
-            {/* Quick Demo Switcher for Evaluation */}
-            <div className="flex items-center gap-1.5 bg-surface-container border border-outline-variant px-3 py-1.5 rounded-md">
-              <span className="text-[11px] font-bold text-secondary uppercase mr-1 hidden lg:inline">Демо-роль:</span>
-              <select 
-                value={userRole} 
-                onChange={(e) => {
-                  const val = e.target.value as 'buyer' | 'author';
-                  setUserRole(val);
-                  navigateTo(val === 'author' ? 'author-dashboard' : 'buyer-dashboard');
-                }}
-                className="bg-transparent border-none outline-none font-sans text-xs font-bold text-primary p-0 cursor-pointer focus:ring-0"
-              >
-                <option value="buyer">Читатель / Покупатель</option>
-                <option value="author">Автор / Издатель</option>
-              </select>
-            </div>
-
             <button 
               onClick={() => {
                 setUserRole('author');
                 navigateTo('author-dashboard');
               }}
-              className="hidden sm:block bg-primary text-on-primary hover:opacity-90 px-5 py-2.5 rounded-sm font-sans text-xs font-bold uppercase tracking-wider scale-98 transition-all"
+              className="hidden sm:block bg-primary text-on-primary hover:opacity-90 px-6 py-2.5 rounded-sm font-sans text-xs font-bold uppercase tracking-wider scale-98 transition-all cursor-pointer"
             >
-              Создать Сбор
+              Запустить
             </button>
           </div>
         </div>
@@ -591,6 +594,74 @@ export default function App() {
         />
       )}
 
+      {/* Floating Dev Panel for Demo Presentations */}
+      <div className="fixed bottom-6 left-6 z-50 font-sans">
+        {!isDevOpen ? (
+          <button 
+            onClick={() => setIsDevOpen(true)}
+            className="bg-primary text-on-primary px-4 py-2.5 rounded-full book-shadow text-xs font-bold uppercase tracking-wider scale-98 active:scale-95 transition-all flex items-center gap-1.5 cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-xs">build</span>
+            Демо-панель
+          </button>
+        ) : (
+          <div className="bg-surface-container-lowest border border-outline-variant p-4 rounded-md book-shadow max-w-xs space-y-3.5 relative text-left">
+            <button 
+              onClick={() => setIsDevOpen(false)}
+              className="absolute top-2.5 right-2.5 text-slate-400 hover:text-primary material-symbols-outlined text-sm cursor-pointer"
+            >
+              close
+            </button>
+            <div className="border-b border-outline-variant pb-2 pr-6">
+              <h5 className="font-sans text-xs font-bold text-primary uppercase">Панель тестирования</h5>
+              <p className="font-sans text-[10px] text-slate-500 mt-0.5 leading-snug">Внутренние экраны приложения для заказчика.</p>
+            </div>
+            
+            <div className="space-y-2">
+              <div>
+                <label className="text-[9px] font-bold text-slate-400 uppercase block mb-1">Выбрать роль:</label>
+                <select 
+                  value={userRole} 
+                  onChange={(e) => {
+                    const val = e.target.value as 'buyer' | 'author';
+                    setUserRole(val);
+                    navigateTo(val === 'author' ? 'author-dashboard' : 'buyer-dashboard');
+                  }}
+                  className="w-full bg-surface-container border border-outline-variant rounded p-1.5 font-sans text-xs font-semibold text-primary outline-none focus:ring-0 cursor-pointer"
+                >
+                  <option value="buyer">Читатель / Покупатель</option>
+                  <option value="author">Автор / Издатель</option>
+                </select>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-1.5 pt-1">
+                <button 
+                  onClick={() => { setUserRole('buyer'); navigateTo('buyer-dashboard'); }}
+                  className={`py-1.5 rounded text-[10px] font-bold text-center border font-sans uppercase cursor-pointer ${currentPage === 'buyer-dashboard' ? 'border-primary bg-primary text-on-primary' : 'border-outline-variant bg-surface-container-low text-slate-600'}`}
+                >
+                  ЛК Покупателя
+                </button>
+                <button 
+                  onClick={() => { setUserRole('author'); navigateTo('author-dashboard'); }}
+                  className={`py-1.5 rounded text-[10px] font-bold text-center border font-sans uppercase cursor-pointer ${currentPage === 'author-dashboard' ? 'border-primary bg-primary text-on-primary' : 'border-outline-variant bg-surface-container-low text-slate-600'}`}
+                >
+                  ЛК Издателя
+                </button>
+              </div>
+              
+              {currentPage !== 'home' && (
+                <button 
+                  onClick={() => navigateTo('home')}
+                  className="w-full bg-surface-container-high hover:bg-surface-container-highest py-1.5 rounded text-[10px] font-bold text-center border border-outline-variant text-slate-700 font-sans uppercase cursor-pointer"
+                >
+                  Вернуться на Главную
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+
     </div>
   );
 }
@@ -620,6 +691,15 @@ const HomeView: React.FC<HomeViewProps> = ({
   onLaunchCampaign
 }) => {
   const vibes = ['Все', 'Меланхолия', 'Интеллект', 'Уют', 'Высокие ставки', 'Нуар'];
+
+  const [sortBy, setSortBy] = useState<'default' | 'proximity' | 'popularity' | 'daysLeft'>('default');
+
+  const getVibeCount = (vibe: string) => {
+    if (vibe === 'Все') {
+      return allCampaigns.filter(c => c.status === 'funding').length;
+    }
+    return allCampaigns.filter(c => c.status === 'funding' && c.vibe === vibe).length;
+  };
 
   // Cost estimation state inside calculator
   const [calcPages, setCalcPages] = useState<number>(220);
@@ -661,6 +741,22 @@ const HomeView: React.FC<HomeViewProps> = ({
     return campaigns.filter(c => c.status === 'funding');
   }, [campaigns]);
 
+  const sortedCampaigns = useMemo(() => {
+    const list = [...ongoingCampaigns];
+    if (sortBy === 'proximity') {
+      list.sort((a, b) => {
+        const pctA = a.currentFunding / a.targetFunding;
+        const pctB = b.currentFunding / b.targetFunding;
+        return pctB - pctA;
+      });
+    } else if (sortBy === 'popularity') {
+      list.sort((a, b) => b.preordersCount - a.preordersCount);
+    } else if (sortBy === 'daysLeft') {
+      list.sort((a, b) => a.daysLeft - b.daysLeft);
+    }
+    return list;
+  }, [ongoingCampaigns, sortBy]);
+
   const printedCampaigns = useMemo(() => {
     return allCampaigns.filter(c => c.status === 'printing' || c.status === 'shipped');
   }, [allCampaigns]);
@@ -670,27 +766,27 @@ const HomeView: React.FC<HomeViewProps> = ({
       {/* Hero Section */}
       <section className="relative min-h-[85vh] flex items-center pt-8 overflow-hidden px-5 md:px-8 max-w-[1280px] mx-auto gap-8 grid grid-cols-1 md:grid-cols-12 mb-16">
         <div className="md:col-span-6 flex flex-col justify-center z-10">
-          <span className="font-sans text-[11px] font-bold text-secondary uppercase tracking-widest mb-4 block">Умный самиздат нового поколения</span>
-          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl text-primary font-bold mb-6 leading-[1.1] tracking-tight">
-            Собери на тираж — <br />
-            <span className="text-secondary font-serif">книга сама уйдет в печать</span>
+          <span className="font-sans text-[11px] font-bold text-secondary uppercase tracking-widest mb-4 block">Платформа предзаказов для независимых авторов</span>
+          <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-primary font-bold mb-6 leading-[1.2] tracking-tight">
+            Для авторов: собери на тираж. <br />
+            <span className="text-secondary font-serif">Для читателей: поддержи книгу, которой ещё нет.</span>
           </h1>
-          <p className="font-sans text-base md:text-[18px] text-on-surface-variant mb-8 leading-relaxed max-w-[500px]">
+          <p className="font-sans text-base md:text-[17px] text-on-surface-variant mb-8 leading-relaxed max-w-[500px]">
             Загрузите готовый PDF. Запустите предпродажи за 5 минут. Как только сумма сборов будет достигнута, мы автоматически напечатаем и доставим книги покупателям. Без финансовых рисков.
           </p>
           <div className="flex flex-wrap gap-4">
             <button 
               onClick={onLaunchCampaign}
-              className="bg-primary text-on-primary hover:opacity-90 px-8 py-4 rounded-sm font-sans text-xs font-bold uppercase tracking-wider transition-all scale-98 active:scale-95 flex items-center gap-2 group"
+              className="bg-primary text-on-primary hover:opacity-90 px-8 py-4 rounded-sm font-sans text-xs font-bold uppercase tracking-wider transition-all scale-98 active:scale-95 flex items-center gap-2 group cursor-pointer"
             >
               Запустить кампанию
               <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
             </button>
             <a 
               href="#catalog"
-              className="border border-outline hover:bg-surface-container-low px-8 py-4 rounded-sm font-sans text-xs font-bold uppercase tracking-wider transition-all"
+              className="border border-outline hover:bg-surface-container-low px-8 py-4 rounded-sm font-sans text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center cursor-pointer text-primary"
             >
-              Смотреть проекты
+              Найти книгу
             </a>
           </div>
           
@@ -729,33 +825,107 @@ const HomeView: React.FC<HomeViewProps> = ({
         </div>
       </section>
 
+      {/* How It Works Section */}
+      <section className="px-5 md:px-8 py-20 bg-surface-container border-y border-outline-variant scroll-mt-24 mb-16" id="how-it-works">
+        <div className="max-w-[1280px] mx-auto text-center">
+          <span className="font-sans text-[11px] font-bold text-secondary uppercase tracking-widest block mb-3">Простой и безопасный процесс</span>
+          <h2 className="font-serif text-3xl md:text-4xl text-primary font-bold mb-12">Как работает BookStart</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-left">
+            <div className="bg-surface-container-lowest border border-outline-variant p-6 rounded-sm shadow-sm flex flex-col justify-between h-full">
+              <div>
+                <span className="font-serif text-3xl font-bold text-secondary mb-4 block font-mono">01</span>
+                <h3 className="font-serif text-lg font-bold text-primary mb-2">Создание кампании</h3>
+                <p className="font-sans text-xs text-slate-600 leading-relaxed">
+                  Автор рассчитывает тираж в калькуляторе и загружает PDF-макет книги. Мы проверяем файл на соответствие техническим стандартам печати (препресс).
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-surface-container-lowest border border-outline-variant p-6 rounded-sm shadow-sm flex flex-col justify-between h-full">
+              <div>
+                <span className="font-serif text-3xl font-bold text-secondary mb-4 block font-mono">02</span>
+                <h3 className="font-serif text-lg font-bold text-primary mb-2">Предзаказ читателями</h3>
+                <p className="font-sans text-xs text-slate-600 leading-relaxed">
+                  Мы открываем страницу сбора. Читатели выбирают интересные уровни поддержки (книга, автограф, мерч) и оплачивают предзаказ на сайте.
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-surface-container-lowest border border-outline-variant p-6 rounded-sm shadow-sm border-amber-500/30 bg-amber-50/20 flex flex-col justify-between h-full relative">
+              <span className="absolute top-3 right-3 bg-amber-500/10 text-amber-700 px-2 py-0.5 rounded-sm font-sans text-[9px] font-bold uppercase tracking-wider">Гарантия</span>
+              <div>
+                <span className="font-serif text-3xl font-bold text-amber-600 mb-4 block font-mono">03</span>
+                <h3 className="font-serif text-lg font-bold text-primary mb-2">Безопасная сделка</h3>
+                <p className="font-sans text-xs text-slate-700 leading-relaxed font-medium">
+                  Все средства хранятся на защищенном эскроу-счете. <strong>Если цель сбора не будет достигнута к концу срока, все деньги автоматически вернутся читателям в полном объеме.</strong>
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-surface-container-lowest border border-outline-variant p-6 rounded-sm shadow-sm flex flex-col justify-between h-full">
+              <div>
+                <span className="font-serif text-3xl font-bold text-secondary mb-4 block font-mono">04</span>
+                <h3 className="font-serif text-lg font-bold text-primary mb-2">Печать и доставка</h3>
+                <p className="font-sans text-xs text-slate-600 leading-relaxed">
+                  При достижении 100% сборов заказ моментально улетает в автоматическую печать по технологии Print-on-Demand и рассылается покупателям через СДЭК/Boxberry.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Dynamic Vibe Filters */}
       <section className="px-5 md:px-8 max-w-[1280px] mx-auto mb-8 border-b border-outline-variant pb-4" id="catalog">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div className="flex gap-2 items-center overflow-x-auto w-full sm:w-auto pb-2 sm:pb-0">
+        <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4">
+          <div className="flex gap-2 items-center overflow-x-auto w-full xl:w-auto pb-2 xl:pb-0">
             <span className="font-sans text-[11px] font-bold text-secondary uppercase mr-2 shrink-0">Атмосфера:</span>
-            {vibes.map(v => (
-              <button
-                key={v}
-                onClick={() => setSelectedVibe(v)}
-                className={`px-4 py-1.5 rounded-full font-sans text-xs font-semibold whitespace-nowrap transition-colors ${selectedVibe === v ? 'bg-primary text-on-primary' : 'bg-surface-container hover:bg-surface-container-high text-slate-600'}`}
-              >
-                {v}
-              </button>
-            ))}
+            {vibes.map(v => {
+              const count = getVibeCount(v);
+              return (
+                <button
+                  key={v}
+                  onClick={() => setSelectedVibe(v)}
+                  className={`px-4 py-1.5 rounded-full font-sans text-xs font-semibold whitespace-nowrap transition-colors flex items-center gap-1.5 cursor-pointer ${selectedVibe === v ? 'bg-primary text-on-primary' : 'bg-surface-container hover:bg-surface-container-high text-slate-600'}`}
+                >
+                  <span>{v}</span>
+                  <span className={`text-[10px] rounded-full px-1.5 font-bold ${selectedVibe === v ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-500'}`}>
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
           </div>
 
-          <div className="relative w-full sm:w-64">
-            <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
-              <span className="material-symbols-outlined text-sm">search</span>
-            </span>
-            <input
-              type="text"
-              placeholder="Поиск по названию или автору..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-surface-container-lowest border border-outline-variant focus:border-primary pl-9 pr-4 py-2 rounded font-sans text-xs outline-none"
-            />
+          <div className="flex flex-col sm:flex-row items-center gap-3 w-full xl:w-auto">
+            {/* Sort Select */}
+            <div className="relative w-full sm:w-auto shrink-0">
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as any)}
+                className="w-full sm:w-auto bg-surface-container-lowest border border-outline-variant focus:border-primary px-3.5 py-2 rounded font-sans text-xs outline-none cursor-pointer text-slate-700 font-semibold"
+              >
+                <option value="default">Сортировка: По умолчанию</option>
+                <option value="proximity">По близости к цели (%)</option>
+                <option value="popularity">По популярности (кол-во предзаказов)</option>
+                <option value="daysLeft">По дате окончания (осталось дней)</option>
+              </select>
+            </div>
+
+            {/* Search Input */}
+            <div className="relative w-full sm:w-64">
+              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                <span className="material-symbols-outlined text-sm">search</span>
+              </span>
+              <input
+                type="text"
+                placeholder="Поиск по названию или автору..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-surface-container-lowest border border-outline-variant focus:border-primary pl-9 pr-4 py-2 rounded font-sans text-xs outline-none text-slate-800"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -769,14 +939,14 @@ const HomeView: React.FC<HomeViewProps> = ({
           </div>
         </div>
 
-        {ongoingCampaigns.length === 0 ? (
+        {sortedCampaigns.length === 0 ? (
           <div className="text-center py-16 border border-dashed border-outline-variant bg-surface-container-low rounded-lg">
             <span className="material-symbols-outlined text-slate-300 text-5xl mb-3">book</span>
             <p className="font-sans text-sm text-slate-500">Книги по выбранным критериям не найдены.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {ongoingCampaigns.map(camp => {
+            {sortedCampaigns.map(camp => {
               const percent = Math.min(Math.round((camp.currentFunding / camp.targetFunding) * 100), 100);
               return (
                 <div 
@@ -796,9 +966,14 @@ const HomeView: React.FC<HomeViewProps> = ({
                         {camp.vibe}
                       </span>
                       {percent >= 90 && (
-                        <span className="absolute top-3 right-3 bg-error text-on-error px-2 py-0.5 rounded-sm font-sans text-[10px] uppercase font-bold tracking-wider animate-pulse">
-                          Горячо
-                        </span>
+                        <div className="group/hot relative absolute top-3 right-3 z-10 cursor-help">
+                          <span className="bg-error text-on-error px-2 py-0.5 rounded-sm font-sans text-[10px] uppercase font-bold tracking-wider animate-pulse flex items-center gap-0.5 shadow-sm">
+                            🔥 Горячо
+                          </span>
+                          <span className="absolute right-0 top-6 hidden group-hover/hot:block bg-slate-900 text-white text-[10px] rounded p-2.5 w-44 shadow-lg z-20 font-sans leading-normal normal-case font-medium text-center">
+                            Высокая скорость сборов! Кампания собрала уже более 90% средств.
+                          </span>
+                        </div>
                       )}
                     </div>
 
@@ -816,7 +991,7 @@ const HomeView: React.FC<HomeViewProps> = ({
                         <span>{percent}% Собрано</span>
                         <span className="text-error font-bold font-sans">Осталось дней: {camp.daysLeft}</span>
                       </div>
-                      <div className="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+                      <div className="w-full h-2.5 bg-slate-200 border border-slate-300/40 rounded-full overflow-hidden">
                         <div 
                           className="h-full bg-primary transition-all duration-1000"
                           style={{ width: `${percent}%` }}
@@ -830,7 +1005,11 @@ const HomeView: React.FC<HomeViewProps> = ({
                         <span className="font-serif text-lg font-bold text-primary">{camp.price} ₽</span>
                       </div>
                       <button 
-                        className="bg-primary text-on-primary px-5 py-2 font-sans text-xs font-bold uppercase tracking-wider rounded-sm scale-98 hover:opacity-95 transition-all"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onSelectCampaign(camp.id);
+                        }}
+                        className="bg-primary text-on-primary px-5 py-2 font-sans text-xs font-bold uppercase tracking-wider rounded-sm scale-98 hover:opacity-95 transition-all cursor-pointer"
                       >
                         Поддержать
                       </button>
@@ -948,7 +1127,7 @@ const HomeView: React.FC<HomeViewProps> = ({
                   </div>
 
                   <div className="flex justify-between items-baseline">
-                    <span className="text-slate-400 text-xs font-medium uppercase font-sans">Стоимость тиража ({calcVolume} экз):</span>
+                    <span className="text-slate-400 text-xs font-medium uppercase font-sans">Чистая печать ({calcVolume} экз):</span>
                     <span className="text-white text-lg font-bold font-mono">{new Intl.NumberFormat('ru-RU').format(printingCalculations.totalPrintPrice)} ₽</span>
                   </div>
 
@@ -959,9 +1138,14 @@ const HomeView: React.FC<HomeViewProps> = ({
 
                   <hr className="border-slate-800" />
 
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-slate-300 text-sm font-semibold uppercase font-sans">Цель сборов (Всего):</span>
-                    <span className="text-white text-3xl font-bold font-mono text-amber-500">{new Intl.NumberFormat('ru-RU').format(printingCalculations.targetGoal)} ₽</span>
+                  <div>
+                    <div className="flex justify-between items-baseline mb-1">
+                      <span className="text-slate-300 text-sm font-semibold uppercase font-sans">Цель сбора на тираж:</span>
+                      <span className="text-white text-3xl font-bold font-mono text-amber-500">{new Intl.NumberFormat('ru-RU').format(printingCalculations.targetGoal)} ₽</span>
+                    </div>
+                    <span className="text-[10px] text-slate-400 block font-sans text-right italic leading-snug">
+                      (Минимальная окупаемость = Стоимость печати + Комиссия платформы)
+                    </span>
                   </div>
 
                   <div className="bg-slate-900/60 p-4 rounded border border-slate-800 space-y-2 mt-4">
@@ -1020,6 +1204,91 @@ const HomeView: React.FC<HomeViewProps> = ({
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Competitor Comparison Section */}
+      <section className="px-5 md:px-8 max-w-[1280px] mx-auto py-20 border-t border-outline-variant scroll-mt-24 animate-fade-in" id="about-us">
+        <div className="text-center max-w-2xl mx-auto mb-16">
+          <span className="font-sans text-[11px] font-bold text-secondary uppercase tracking-widest block mb-3">Почему выбирают нас</span>
+          <h2 className="font-serif text-3xl md:text-4xl text-primary font-bold mb-4">Сравнение платформ</h2>
+          <p className="font-sans text-xs text-slate-500">Посмотрите, чем BookStart отличается от традиционных издательских сервисов и самиздата.</p>
+        </div>
+
+        <div className="overflow-x-auto border border-outline-variant rounded bg-surface-container-lowest shadow-sm">
+          <table className="w-full text-left font-sans text-xs border-collapse min-w-[700px]">
+            <thead>
+              <tr className="border-b border-outline-variant bg-surface-container/60">
+                <th className="py-4 px-6 font-semibold text-slate-700 w-1/4">Возможности и условия</th>
+                <th className="py-4 px-6 font-bold text-primary bg-amber-50/50 border-x border-amber-500/10 w-1/4">BookStart (Мы)</th>
+                <th className="py-4 px-6 font-semibold text-slate-500 w-1/6">Ridero</th>
+                <th className="py-4 px-6 font-semibold text-slate-500 w-1/6">LitRes / Самиздат</th>
+                <th className="py-4 px-6 font-semibold text-slate-500 w-1/6">Bookmate</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-outline-variant/60">
+              <tr>
+                <td className="py-4 px-6 font-semibold text-slate-700">Стартовые вложения автора</td>
+                <td className="py-4 px-6 font-bold text-green-700 bg-amber-50/50 border-x border-amber-500/10">
+                  <div className="flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-[16px] text-green-600 font-bold">check_circle</span>
+                    <span>0 ₽ (Абсолютно бесплатно)</span>
+                  </div>
+                </td>
+                <td className="py-4 px-6 text-slate-600">0 ₽ / Платные услуги верстки и обложки</td>
+                <td className="py-4 px-6 text-slate-600">0 ₽</td>
+                <td className="py-4 px-6 text-slate-600">Нет опции самиздата напрямую</td>
+              </tr>
+              <tr>
+                <td className="py-4 px-6 font-semibold text-slate-700">Встроенный краудфандинг сборов</td>
+                <td className="py-4 px-6 font-bold text-green-700 bg-amber-50/50 border-x border-amber-500/10">
+                  <div className="flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-[16px] text-green-600 font-bold">check_circle</span>
+                    <span>Да (Предзаказы на платформе)</span>
+                  </div>
+                </td>
+                <td className="py-4 px-6 text-slate-600">Нет (Только готовая дистрибуция)</td>
+                <td className="py-4 px-6 text-slate-600">Нет (Только готовая продажа)</td>
+                <td className="py-4 px-6 text-slate-600">Нет (Только чтение по подписке)</td>
+              </tr>
+              <tr>
+                <td className="py-4 px-6 font-semibold text-slate-700">Безопасность (Эскроу-гарантия)</td>
+                <td className="py-4 px-6 font-bold text-green-700 bg-amber-50/50 border-x border-amber-500/10">
+                  <div className="flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-[16px] text-green-600 font-bold">check_circle</span>
+                    <span>Да (100% возврат при неуспехе)</span>
+                  </div>
+                </td>
+                <td className="py-4 px-6 text-slate-600">&mdash;</td>
+                <td className="py-4 px-6 text-slate-600">&mdash;</td>
+                <td className="py-4 px-6 text-slate-600">&mdash;</td>
+              </tr>
+              <tr>
+                <td className="py-4 px-6 font-semibold text-slate-700">Автоматическая печать тиража</td>
+                <td className="py-4 px-6 font-bold text-green-700 bg-amber-50/50 border-x border-amber-500/10">
+                  <div className="flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-[16px] text-green-600 font-bold">check_circle</span>
+                    <span>Да (Авто-запуск Print-on-Demand)</span>
+                  </div>
+                </td>
+                <td className="py-4 px-6 text-slate-600">Только под заказ автора или покупателя</td>
+                <td className="py-4 px-6 text-slate-600">Печать по требованию после модерации</td>
+                <td className="py-4 px-6 text-slate-600">Нет (Только электронный формат)</td>
+              </tr>
+              <tr>
+                <td className="py-4 px-6 font-semibold text-slate-700">Автоматическая доставка под ключ</td>
+                <td className="py-4 px-6 font-bold text-green-700 bg-amber-50/50 border-x border-amber-500/10">
+                  <div className="flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-[16px] text-green-600 font-bold">check_circle</span>
+                    <span>Да (СДЭК / Boxberry интегрированы)</span>
+                  </div>
+                </td>
+                <td className="py-4 px-6 text-slate-600">Доставка силами автора или магазинов</td>
+                <td className="py-4 px-6 text-slate-600">Только через маркетплейсы партнеров</td>
+                <td className="py-4 px-6 text-slate-600">&mdash;</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
