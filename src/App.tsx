@@ -338,15 +338,25 @@ export default function App() {
       <nav className="sticky top-0 z-40 glass-nav border-b border-outline-variant transition-all duration-200 shadow-sm/50">
         <div className="flex justify-between items-center w-full px-5 md:px-8 max-w-[1280px] mx-auto py-5 min-h-[96px]">
           <div className="flex items-center gap-8">
-            <button onClick={() => navigateTo('home')} className="flex items-center gap-3.5 hover:opacity-85 transition-opacity cursor-pointer">
+            <button 
+              onClick={() => {
+                if (currentPage === 'home' && !selectedCampaignId) {
+                  window.scrollTo(0, 0);
+                } else {
+                  navigateTo('home');
+                }
+              }} 
+              className="hover:opacity-85 transition-opacity cursor-pointer flex items-center"
+              aria-label="На главную"
+            >
               <img src="/logo.png" alt="Издательство СТАРТ" className="h-16 md:h-18 w-auto object-contain drop-shadow-sm" />
-              <span className="group/nav-tooltip relative bg-primary/5 border border-primary/10 text-primary font-mono text-[8px] sm:text-[9px] font-bold tracking-widest px-2.5 py-1 rounded uppercase ml-1 cursor-help hover:bg-primary/10 transition-colors">
-                Автоматическая печать
-                <span className="absolute left-1/2 -translate-x-1/2 top-8 hidden group-hover/nav-tooltip:block bg-slate-900 text-white text-[10px] rounded p-2.5 w-52 shadow-lg z-20 font-sans leading-normal normal-case font-medium text-center">
-                  🖨️ Print-on-Demand: книга отправляется в печать автоматически при 100% сборов.
-                </span>
-              </span>
             </button>
+            <span className="group/nav-tooltip relative bg-primary/5 border border-primary/10 text-primary font-mono text-[8px] sm:text-[9px] font-bold tracking-widest px-2.5 py-1 rounded uppercase cursor-help hover:bg-primary/10 transition-colors">
+              Автоматическая печать
+              <span className="absolute left-1/2 -translate-x-1/2 top-8 hidden group-hover/nav-tooltip:block bg-slate-900 text-white text-[10px] rounded p-2.5 w-52 shadow-lg z-20 font-sans leading-normal normal-case font-medium text-center">
+                🖨️ Print-on-Demand: книга отправляется в печать автоматически при 100% сборов.
+              </span>
+            </span>
             
             <div className="hidden md:flex items-center gap-8 font-sans text-[13px] font-semibold uppercase tracking-wider text-slate-500">
               <button 
@@ -462,9 +472,19 @@ export default function App() {
       <footer className="bg-primary text-surface py-16 border-t border-outline">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 px-5 md:px-8 max-w-[1280px] mx-auto">
           <div className="space-y-4">
-            <div className="bg-white p-2.5 rounded-sm inline-block border border-outline-variant/30">
+            <button 
+              onClick={() => {
+                if (currentPage === 'home' && !selectedCampaignId) {
+                  window.scrollTo(0, 0);
+                } else {
+                  navigateTo('home');
+                }
+              }}
+              className="bg-white p-2.5 rounded-sm inline-block border border-outline-variant/30 hover:opacity-85 transition-opacity cursor-pointer text-left"
+              aria-label="На главную"
+            >
               <img src="/logo.png" alt="Издательство СТАРТ" className="h-10 w-auto object-contain" />
-            </div>
+            </button>
             <p className="font-sans text-[14px] text-slate-400 leading-relaxed">
               Собери цель — книга автоматически уходит в печать и к читателям. Без риска, без стартовых вложений автора.
             </p>
