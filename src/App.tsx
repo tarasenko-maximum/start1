@@ -1219,26 +1219,31 @@ const HomeView: React.FC<HomeViewProps> = ({
           <p className="font-sans text-xs text-slate-500 mt-1">Эти книги прошли путь от сбора средств до физического тиража.</p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+        <div className={`grid gap-8 ${
+          printedCampaigns.length === 1 ? 'grid-cols-1 max-w-2xl mx-auto' : 
+          printedCampaigns.length === 2 ? 'grid-cols-1 md:grid-cols-2' : 
+          printedCampaigns.length === 3 ? 'grid-cols-1 md:grid-cols-3' : 
+          'grid-cols-2 md:grid-cols-4 lg:grid-cols-5'
+        }`}>
           {printedCampaigns.map(camp => (
             <div 
               key={camp.id} 
               onClick={() => onSelectCampaign(camp.id)}
-              className="space-y-3 cursor-pointer group"
+              className="space-y-4 cursor-pointer group"
             >
-              <div className="aspect-[3/4] bg-surface-container-lowest p-5 border border-outline-variant/60 book-shadow overflow-hidden flex items-center justify-center relative cover-tilt-container">
+              <div className="aspect-[3/4] bg-surface-container-lowest p-8 border border-outline-variant/60 book-shadow overflow-hidden flex items-center justify-center relative cover-tilt-container">
                 <img 
                   src={camp.coverUrl} 
                   alt={camp.title} 
-                  className="max-h-[90%] object-contain grayscale group-hover:grayscale-0 cover-tilt-active group-hover:book-shadow-hover transition-all duration-300" 
+                  className="max-h-[92%] object-contain grayscale group-hover:grayscale-0 cover-tilt-active group-hover:book-shadow-hover transition-all duration-300" 
                 />
-                <span className="absolute bottom-2 right-2 bg-green-100 text-green-800 border border-green-200 px-2 py-0.5 rounded-sm font-sans text-[9px] uppercase font-bold tracking-wider">
+                <span className="absolute bottom-3 right-3 bg-green-100 text-green-800 border border-green-200 px-2.5 py-0.5 rounded-sm font-sans text-[10px] uppercase font-bold tracking-wider">
                   {camp.status === 'printing' ? 'В печати' : 'У авторов'}
                 </span>
               </div>
               <div>
-                <h4 className="font-serif text-sm font-bold text-primary truncate group-hover:text-secondary transition-colors">{camp.title}</h4>
-                <p className="font-sans text-[11px] text-slate-500">{camp.author}</p>
+                <h4 className="font-serif text-lg font-bold text-primary truncate group-hover:text-secondary transition-colors">{camp.title}</h4>
+                <p className="font-sans text-sm text-slate-500">{camp.author}</p>
               </div>
             </div>
           ))}
